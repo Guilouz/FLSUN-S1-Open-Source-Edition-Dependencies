@@ -1,0 +1,17 @@
+# FLSUN S1 Open Source Edition
+
+[Unit]
+Description=GuppyFLO Service
+Requires=network-online.target
+After=network-online.target
+
+[Service]
+Type=simple
+Restart=always
+RestartSec=1
+User=pi
+WorkingDirectory=/home/pi/guppyflo
+ExecStart=/home/pi/guppyflo/guppyflo -tcpproxy
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,84 @@
+#!/bin/bash
+# FLSUN S1 Open Source Edition
+
+WHITE='\033[0m'
+CYAN='\033[0;36m'
+GREEN='\033[1;32m'
+
+function system_line() {
+  local title="$1"
+  local value="$2"
+  local max_length=63
+  local separator=": "
+  local title_length=${#title}
+  local value_length=${#value}
+  local separator_length=${#separator}
+  local value_padding=$((max_length - title_length - separator_length - value_length))
+  printf " │ ${CYAN}%s${WHITE}${separator}%s%*s${WHITE}│\n" "$title" "$value" $value_padding ''
+}
+
+function format_uptime() {
+  local uptime=$1
+  local upDays=$((uptime / 60 / 60 / 24))
+  local upHours=$((uptime / 60 / 60 % 24))
+  local upMins=$((uptime / 60 % 60))
+
+  local output=""
+
+  if [ $upDays -gt 0 ]; then
+    output+="$upDays day"
+    [ $upDays -gt 1 ] && output+="s"
+    output+=" "
+  fi
+
+  if [ $upHours -gt 0 ]; then
+    output+="$upHours hour"
+    [ $upHours -gt 1 ] && output+="s"
+    output+=" "
+  fi
+
+  if [ $upMins -gt 0 ] || [ -z "$output" ]; then
+    output+="$upMins minute"
+    [ $upMins -gt 1 ] && output+="s"
+  fi
+
+  echo "$output"
+}
+
+kernel=$(uname -r)
+cpu=$(LC_ALL=C lscpu | awk -F': +' '/CPU max MHz/ {printf "%.1fGHz\n", $2 / 1000}')
+memfree=$(awk '/MemFree/ {print $2}' /proc/meminfo)
+memtotal=$(awk '/MemTotal/ {print $2}' /proc/meminfo)
+pourcent=$(( ($memfree * 100) / $memtotal ))
+diskused=$(awk '{print $3 " / " $2 " (" $4 " available)"}' < <(df -h | grep /dev/root))
+hostname=$(uname -n)
+ip_address=$(hostname -I | cut -d " " -f1)
+mac_address=$(awk '/ether/ {print toupper($2)}' < <(ip link show wlan0))
+load=$(awk -v cpus=4 '{printf "%.2f%% (1 min) | %.2f%% (5 min) | %.2f%% (15 min)\n", $1*100/cpus, $2*100/cpus, $3*100/cpus}' /proc/loadavg)
+uptime=$(cut -f1 -d. < /proc/uptime)
+formatted_uptime=$(format_uptime $uptime)
+device_sn=$(tail -n 1 /proc/cpuinfo | awk -F ': ' '{print $2}')
+distribution=$(grep '^VERSION=' /etc/os-release | cut -d'"' -f2)
+
+echo
+echo -e "${WHITE} ┌────────────────────────────────────────────────────────────────┐"
+echo -e "${WHITE} │                                                                │"
+echo -e "${WHITE} │  ███████████  ██          ████████     ██        ███   ${CYAN}██████  ${WHITE}│"
+echo -e "${WHITE} │  ██           ██         ██            ██        █████   ${CYAN}████  ${WHITE}│"
+echo -e "${WHITE} │  ███████      ██         ████████████  ██            ███   ${CYAN}██  ${WHITE}│"
+echo -e "${WHITE} │  ██           ██                   ██  ██        ██    ███     │"
+echo -e "${WHITE} │  ██           ████████  ████████████    ██████████       ███   │"
+echo -e "${WHITE} │                                                                │"
+echo -e "${WHITE} ├────────────────────────────────────────────────────────────────┤"
+echo -e "${WHITE} │                                                                │"
+system_line "     System" "Debian $distribution - Kernel $kernel"
+system_line "        CPU" "Rockchip Quad-Core ARM Cortex-A7 @ $cpu"
+system_line "        RAM" "$(($memfree / 1024)) MB / $(($memtotal / 1024)) MB ($pourcent% available)"
+system_line "    Storage" "$diskused"
+system_line "   Hostname" "$hostname"
+system_line " IP Address" "$ip_address"
+system_line "MAC Address" "$mac_address"
+system_line "  CPU Usage" "$load"
+system_line "     Uptime" "$formatted_uptime"
+echo -e "${WHITE} │                                                                │"
+echo -e "${WHITE} └────────────────────────────────────────────────────────────────┘"
