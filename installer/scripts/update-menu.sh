@@ -9,7 +9,7 @@ function update_menu_ui() {
     inner_line
     hr
     menu_option ' 1' 'Update Klipper configuration files'
-    menu_option ' 2' 'Configure my printer'
+    menu_option ' 2' 'Printer Setup Wizard'
     hr
     menu_option ' 3' 'Update Motherboard MCU firmware'
     menu_option ' 4' 'Update MMB Cubic MCU firmware'
