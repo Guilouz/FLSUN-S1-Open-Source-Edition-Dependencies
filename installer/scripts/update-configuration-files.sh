@@ -12,6 +12,7 @@ FILES=(
     "Configurations/led-mmb-cubic.cfg"
     "Configurations/led-stock.cfg"
     "Configurations/macros.cfg"
+    "Configurations/setup-printer.cfg"
     "Configurations/temp-sensor-mmb-cubic.cfg"
     "KlipperScreen.conf"
     "config.cfg"
