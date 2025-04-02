@@ -142,23 +142,6 @@ function configure_my_printer(){
                                             error_msg "Please select a correct choice!";;
                                     esac
                                 done
-                                #while true; do
-                                #    read -p "${white}  Do you use Load Cell Probe feature? (${cyan}y${white}/${cyan}n${white}): ${cyan}" choice8
-                                #    case "${choice8}" in
-                                #        Y|y)
-                                #            edit_config disable "include Configurations/probe-stock.cfg" config > /dev/null 2>&1
-                                #            edit_config enable "include Configurations/probe-mmb-cubic.cfg" config > /dev/null 2>&1
-                                #            ok_msg "Load Cell Probe feature enabled!"
-                                #            break;;
-                                #        N|n)
-                                #            edit_config enable "include Configurations/probe-stock.cfg" config > /dev/null 2>&1
-                                #            edit_config disable "include Configurations/probe-mmb-cubic.cfg" config > /dev/null 2>&1
-                                #            ok_msg "Load Cell Probe feature not enabled!"
-                                #            break;;
-                                #        *)
-                                #            error_msg "Please select a correct choice!";;
-                                #    esac
-                                #done
                                 break
                             else
                                 error_msg "No MMB Cubic device found! Please check the connection."
@@ -171,8 +154,6 @@ function configure_my_printer(){
                             edit_config disable "include Configurations/temp-sensor-mmb-cubic.cfg" config > /dev/null 2>&1
                             edit_config enable "include Configurations/led-stock.cfg" config > /dev/null 2>&1
                             edit_config disable "include Configurations/led-mmb-cubic.cfg" config > /dev/null 2>&1
-                            #edit_config enable "include Configurations/probe-stock.cfg" config > /dev/null 2>&1
-                            #edit_config disable "include Configurations/probe-mmb-cubic.cfg" config > /dev/null 2>&1
                             ok_msg "BigTreeTech MMB Cubic features disabled!"
                             break;;
                         *)
