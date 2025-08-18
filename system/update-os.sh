@@ -1,7 +1,7 @@
 #!/bin/bash
 # FLSUN S1 Open Source Edition
 
-SCRIPT_VERSION="2.0"
+SCRIPT_VERSION="2.1"
 
 OS_RELEASE_FILE="/usr/lib/os-release"
 

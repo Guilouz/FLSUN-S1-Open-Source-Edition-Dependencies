@@ -26,7 +26,7 @@ function main_menu_ui() {
     hr
     bottom_menu_option 'q' 'Quit' "${darkred}"
     hr
-    echo -e " │                                                           ${cyan}v2.0${white} │"
+    echo -e " │                                                           ${cyan}v2.1${white} │"
     bottom_line
 }
 
