@@ -17,6 +17,8 @@ function extras_menu_ui() {
     hr
     menu_option ' 6' 'Delete cache and logs files'
     hr
+    menu_option ' 7' 'Extend storage partition'
+    hr
     inner_line
     hr
     bottom_menu_option 'b' 'Back to Main Menu' "${cyan}"
@@ -52,6 +54,8 @@ function extras_menu() {
                 run "restore_web_ui_settings" "extras_menu_ui";;
             6)
                 run "delete_cache_logs" "extras_menu_ui";;
+            7)
+                run "extend_storage_partition" "extras_menu_ui";;
             B|b)
                 echo -e "${white}"
                 clear; main_menu; break;;
